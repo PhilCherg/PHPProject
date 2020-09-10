@@ -1,0 +1,49 @@
+#form {
+    width: 70%;
+    margin: 20px auto;
+    background-color: #eee;
+    border-radius: 10px;
+    padding: 2%;
+    overflow: auto;
+}
+
+.textInput {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1.5% 1%;
+    margin: 10px 0;
+    display: inline-block;
+    border: solid 1px #aaa;
+    border-radius: 5px;
+}
+
+.buttonInput {
+    width: 15%;
+    color: white;
+    padding: 1.5% 1%;
+    margin: 10px 0px 0px 0px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+    font-family: sans-serif !important;
+}
+
+.greenButton {
+    background-color: #4CAF50;
+}
+
+.grayButton {
+    background-color: #555555;
+}
+
+.redButton {
+    background-color: #f44336;
+}
+
+.message {
+    color: red;
+    padding: 0 0 20px 0;
+}

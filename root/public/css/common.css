@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-decoration: none;
+}
+
+.content {
+    width: 60%;
+    margin: auto;
+}
+
+.menu {
+    background-color: #555555;
+    width: 100%;
+    padding: 0;
+}
+
+.menu ul {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    list-style: none;
+}
+
+.menu li {
+    padding: 2%;
+    font-size: 20px;
+    font-family: sans-serif;
+    color: #eee;
+    margin-left: 0;
+    text-decoration: none;
+}
+
+.menu li:hover {
+    background-color: #999;
+}
+
+.leftButton {
+    float:left;
+}
+
+.rightButton {
+    float: right;
+}
+
+.greenButton {
+    background-color: #4CAF50;
+}
+
+.grayButton {
+    background-color: #555555;
+}
+
+.redButton {
+    background-color: #f44336;
+}
+
+.blueButton {
+    background-color: #1758f0;
+}
+
+h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+.sectionHeading {
+    padding: 1% 2%;
+    overflow: auto;
+    background-color: #f2f2f2;
+}
+
+.sectionHeading h1 {
+    font-size: 35px;
+    text-align: center;
+    margin: 10px 0px 20px 0px;
+}
+
+.sectionHeading p {
+    font-size: 25px;
+    text-align: center;
+}
+
+.sectionHeading input {
+    display: block;
+    margin: 20px auto 10px ;
+}
+
+.instructions h1, p {
+    text-align: center;
+    margin: 50px 0px;
+}
+.instructions h1 {
+    font-size: 40px;
+}
+.instructions p {
+    font-size: 25px;
+    line-height: 2em;
+}
+.instructions {
+    background-color: #eee;
+    padding: 3%;
+}
