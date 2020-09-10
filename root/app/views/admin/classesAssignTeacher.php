@@ -22,7 +22,7 @@
                         ?>
                     </select><br />
                     <a href="../../admin/classes"><input type="button" class="buttonInput leftButton blueButton" value="Back"></a>
-                    <input type="submit" class="buttonInput rightButton redButton" value="Assign">
+                    <input type="submit" class="buttonInput rightButton greenButton" value="Assign">
                 </form>
             </div>
         </div>
