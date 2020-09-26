@@ -47,3 +47,7 @@
     color: red;
     padding: 0 0 20px 0;
 }
+
+.readonly {
+    background-color: #ccc;
+}

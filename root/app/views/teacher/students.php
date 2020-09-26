@@ -11,9 +11,6 @@
                 $('.title').click(function(){
                     $(this).nextUntil('.title').slideToggle(200);
                 });
-                $('.student').click(function(){
-                    $(this).nextUntil('.student').slideToggle(200);
-                });
             });
         </script>
     </head>
@@ -44,7 +41,7 @@
                                             <td>".$student['first_name']."</td>
                                             <td>".$student['middle_name']."</td>
                                             <td>".$student['last_name']."</td>
-                                            <td><a href='classesStudentInfo/".$student['id']."'><input type='button' class='button buttonBig blueButton' value='Info'></a></td>
+                                            <td><a href='studentsInfo/".$student['id']."'><input type='button' class='button buttonBig blueButton' value='Info'></a></td>
                                     </tr>";
                                 }
                             }

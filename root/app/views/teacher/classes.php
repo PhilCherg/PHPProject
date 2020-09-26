@@ -8,11 +8,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             $(document).ready(function(){
+                $('.classTable').slideToggle(200);
                 $('.title').click(function(){
                     $(this).nextUntil('.title').slideToggle(200);
-                });
-                $('.student').click(function(){
-                    $(this).nextUntil('.student').slideToggle(200);
                 });
             });
         </script>
