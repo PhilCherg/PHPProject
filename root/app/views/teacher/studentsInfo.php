@@ -14,11 +14,15 @@
                     $average = 0;
                     $total = 0;
                     foreach ($data['assignments'] as $assignment) {
-                        $total += round((float)$assignment['assignment_weight'], 2);
+                        if ($assignment['assignment_points'] != null) {
+                            $total += round((float)$assignment['assignment_weight'], 2);
+                        }
                     }
                     foreach ($data['assignments'] as $assignment) {
                         $score = round((float)$assignment['assignment_points'] / (float)$assignment['assignment_max'] * 100, 2);
-                        $average += round($score * $assignment['assignment_weight'] / $total, 2);
+                        if ($total != 0) {
+                            $average += round($score * $assignment['assignment_weight'] / $total, 2);
+                        }
                     }
                     if ($average == 0) $average = "--";
                     echo "<h1>".$average."%</h1>";

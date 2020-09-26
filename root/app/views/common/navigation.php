@@ -23,7 +23,7 @@
                     echo "<a href='/PHPProject/root/public/home/index'><li class='leftButton'>Home</li></a>";
                     echo "<a href='/PHPProject/root/public/home/login'><li class='rightButton'>Log In</li></a>";    
                 }
-                } else {
+            } else {
                 echo "<a href='/PHPProject/root/public/home/index'><li class='leftButton'>Home</li></a>";
                 echo "<a href='/PHPProject/root/public/home/login'><li class='rightButton'>Log In</li></a>";
             }

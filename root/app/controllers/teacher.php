@@ -43,8 +43,63 @@
             $this->view("teacher/classes", ['teacher' => $teacher, 'classes' => $classes, 'classTeachers' => $classTeachers, 'assignments' => $assignments, 'classAssignments' => $classAssignments]);
         }
 
-        public function assignments()
+        public function classesAddAssignment($id)
         {
+            try {
+                $class = $this->db->executeSQL("SELECT * FROM Classes WHERE id = :id", ['id' => $id]);
+                $assignments = $this->db->executeSQL("SELECT * FROM Assignments", []);
+                $teacher = $this->db->executeSQL("SELECT * FROM Teachers WHERE id = :id", ['id' => $_SESSION['id']]);
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
+            if (!isset($_SESSION['message'])) { $_SESSION['message'] = ""; }
+            $this->view("teacher/classesAddAssignment", ['class' => $class, 'teacher' => $teacher, 'assignments' => $assignments]);
+        }
+
+        public function classesAddAssignmentSubmit() {
+            if ($_POST['assignment_id'] == null) {
+                $_SESSION['message'] = "You must choose an assignment to assign to this class.";
+                header("Location:../teacher/classesAddAssignment/".$_POST['class_id']);
+            } else {
+                try {
+                    $allLinks = $this->db->executeSQL("SELECT * FROM Class_Assignments;", []);
+                    $students = $this->db->executeSQL("SELECT * FROM Students WHERE class_id = :id", ['id' => $_POST['class_id']]);
+                    $unique = true;
+                    foreach ($allLinks as $link) {
+                        if ($link['class_id'] == $_POST['class_id'] && $link['assignment_id'] == $_POST['assignment_id']) $unique = false;
+                    }
+                    if ($unique) {
+                        $this->db->executeSQL("INSERT INTO Class_Assignments(class_id, assignment_id) VALUES(:class_id, :assignment_id);", ['class_id' => $_POST['class_id'], 'assignment_id' => $_POST['assignment_id']]);
+                        foreach ($students as $student) {
+                            $this->db->executeSQL("INSERT INTO Student_Assignments(student_id, assignment_id) VALUES(:student_id, :assignment_id);", ['student_id' => $student['id'], 'assignment_id' => $_POST['assignment_id']]);
+                        }
+                        header("Location:../teacher/classes");
+                    } else {
+                        $_SESSION['message'] = "This assignment has already been added to this class.";
+                        header("Location:../teacher/classesAddAssignment/".$_POST['class_id']);
+                    }       
+                } catch(Exception $e) {
+                    echo $e->getMessage();
+                }
+            }
+        }
+
+        public function classesRemoveAssignment($class_id, $assignment_id) {
+            try {
+                $students = $this->db->executeSQL("SELECT * FROM Students WHERE class_id = :id", ['id' => $class_id]);
+                    
+                $this->db->executeSQL("DELETE FROM Class_Assignments WHERE class_id = :class_id AND assignment_id = :assignment_id;", ['class_id' => $class_id, 'assignment_id' => $assignment_id]);
+                foreach ($students as $student) {
+                    $this->db->executeSQL("DELETE FROM Student_Assignments WHERE student_id = :student_id AND assignment_id = :assignment_id;", ['student_id' => $student['id'], 'assignment_id' => $assignment_id]);
+                }
+                header("Location:../../../teacher/classes");
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+        }
+
+        public function assignments() {
             try {
                 $teacher = $this->db->executeSQL("SELECT * FROM Teachers WHERE id = :id", ['id' => $_SESSION['id']]);
                 $assignments = $this->db->executeSQL("SELECT * FROM Assignments", []);
@@ -59,21 +114,29 @@
         public function assignmentsCreate() {
             try {
                 $subject = $this->db->executeSQL("SELECT Subjects.id FROM Teachers LEFT JOIN Subjects ON Teachers.subject_id = Subjects.id;", []);
+                $assignments = $this->db->executeSQL("SELECT assignment_weight FROM Assignments;", []);
+                $availableWeight = 100;
+                foreach ($assignments as $assignment) {
+                    $availableWeight -= $assignment['assignment_weight'];
+                }
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
 
             if (!isset($_SESSION['message'])) { $_SESSION['message'] = ""; }
-            $this->view("teacher/assignmentsCreate", ['subject' => $subject, 'message' => $_SESSION['message']]);
+            $this->view("teacher/assignmentsCreate", ['subject' => $subject, 'availableWeight' => $availableWeight, 'message' => $_SESSION['message']]);
         }
 
         public function assignmentsCreateSubmit() {  
-            if ($_POST['name'] == null || $_POST['weight'] == null) {
-                $_SESSION['message'] = "Both the assignment name and weight are required.";
+            if ($_POST['name'] == null || $_POST['weight'] == null || $_POST['max'] == null) {
+                $_SESSION['message'] = "The assignment name, max, and weight are required.";
+                header("Location:../teacher/assignmentsCreate");
+            } else if ((float)$_POST['weight'] > (float)$_POST['availableWeight']) {
+                $_SESSION['message'] = "The assignment weight cannot exceed the available weight.";
                 header("Location:../teacher/assignmentsCreate");
             } else {
                 try {
-                    $this->db->executeSQL("INSERT INTO Assignments(assignment_title, assignment_weight, subject_id) VALUES(:assignment_name, :assignment_weight, :subject_id);", ['assignment_name' => $_POST['name'], 'assignment_weight' => $_POST['weight'], 'subject_id' => $_POST['subject_id']]);                    
+                    $this->db->executeSQL("INSERT INTO Assignments(assignment_title, assignment_max, assignment_weight, subject_id) VALUES(:assignment_name, :assignment_max, :assignment_weight, :subject_id);", ['assignment_name' => $_POST['name'], 'assignment_max' => $_POST['max'], 'assignment_weight' => $_POST['weight'], 'subject_id' => $_POST['subject_id']]);                    
                     header("Location:../teacher/assignments");
                 } catch(Exception $e) {
                     echo $e->getMessage();

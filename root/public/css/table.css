@@ -1,6 +1,7 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 table td, th {
@@ -47,10 +48,19 @@ table th {
     width: 10%;
 }
 
+.titleDiv {
+    background-color: #ccc;
+    width: 100%;
+}
+
 .title {
     color: #333;
     padding: 1%;
     background-color: #ccc;
+}
+
+.block {
+    display: inline-block;
 }
 
 .title:hover {
