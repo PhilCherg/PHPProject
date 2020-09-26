@@ -22,28 +22,30 @@
             <?php require_once "../app/views/common/navigation.php" ?>
             <div class="sectionHeading">
                 <h1>Classes Overview</h1>
-                <p>View all classes and the assignments in them. Add assignments that you have created.</p>
+                <p>View all classes and the students in them. Add new individual grades to students.</p>
             </div>
             <?php
                 foreach ($data['classes'] as $class) {
-                    foreach ($data['classTeachers'] as $linkT) {
-                        if ($linkT['class_id'] == $class['id'] && $linkT['teacher_id'] == $data['teacher'][0]['id']) {
+                    foreach ($data['links'] as $link) {
+                        if ($link['class_id'] == $class['id'] && $link['teacher_id'] == $data['teacher'][0]['id']) {
                             echo "<h1 class='title'>Class: ".$class['class_name']."</h1>";
                             echo "<table class='classTable'>
                                 <tr>
-                                    <th>Assignment</th>
-                                    <th class='smallCol'>Weight</th>
-                                    <th class='smallCol'></th>
+                                    <th class='smallCol'>Id</th>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th class='smallCol'>Add Grade</th>
                                 </tr>";
-                            foreach($data['assignments'] as $assignment) {
-                                foreach($data['classAssignments'] as $linkA) {
-                                    if ($linkA['class_id'] == $class['id'] && $linkA['assignment_id'] == $assignment['id']) {
-                                        echo "<tr class='assignment'>
-                                            <td>".$assignment['assignment_title']."</td>
-                                            <td>".$assignment['assignment_weight']."</td>
-                                            <td><a href='classesRemoveAssignment/".$assignment['id']."'><input type='button' class='button buttonBig redButton' value='Remove'></a></td>
-                                        </tr>";
-                                    }
+                            foreach($data['students'] as $student) {
+                                if ($student['class_id'] == $class['id']) {
+                                    echo "<tr class='student'>
+                                            <td>".$student['id']."</td>
+                                            <td>".$student['first_name']."</td>
+                                            <td>".$student['middle_name']."</td>
+                                            <td>".$student['last_name']."</td>
+                                            <td><a href='classesAddGrade/".$student['id']."'><input type='button' class='button buttonBig greenButton' value='Add Grade'></a></td>
+                                    </tr>";
                                 }
                             }
                             echo "</table>";

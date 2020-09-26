@@ -11,7 +11,9 @@
                     echo "<a href='/PHPProject/root/public/home/logout'><li class='rightButton'>Log Out</li></a>";    
                 } else if ($_SESSION['access'] == "teacher") {
                     echo "<a href='/PHPProject/root/public/teacher/index'><li class='leftButton'>Home</li></a>";
+                    echo "<a href='/PHPProject/root/public/teacher/students'><li class='leftButton'>Students</li></a>";
                     echo "<a href='/PHPProject/root/public/teacher/classes'><li class='leftButton'>Classes</li></a>";
+                    echo "<a href='/PHPProject/root/public/teacher/assignments'><li class='leftButton'>Assignments</li></a>";
                     echo "<a href='/PHPProject/root/public/home/logout'><li class='rightButton'>Log Out</li></a>";
                 } else if ($_SESSION['access'] == "student") {
                     echo "<a href='/PHPProject/root/public/student/index'><li class='leftButton'>Home</li></a>";

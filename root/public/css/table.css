@@ -46,3 +46,15 @@ table th {
 .smallCol {
     width: 10%;
 }
+
+.title {
+    color: #333;
+    padding: 1%;
+    margin-top: 20px;
+    border: #666 solid 1px;
+    background-color: #ccc;
+}
+
+.title:hover {
+    cursor: pointer;
+}
