@@ -3,10 +3,10 @@ table {
     width: 100%;
 }
 
-table td, th {
+table thead td, th {
     border: solid #ddd 1px;
-    font-size: 10px;
-    padding: 20px 10px;
+    font-size: 14px;
+    padding: 10px 10px;
 }
 
 table tr:nth-child(even) {
@@ -18,7 +18,7 @@ table tr:hover {
 }
 
 table th {
-    padding: 15px 10px;
+    padding: 15px 10px !important;
     text-align: left;
     background-color: #555555;
     color: white;
@@ -47,6 +47,10 @@ table th {
     width: 10%;
 }
 
+.mediumCol {
+    width: 15%;
+}
+
 .titleDiv {
     background-color: #ccc;
     width: 100%;
@@ -59,10 +63,55 @@ table th {
     margin-top: 20px;
 }
 
+.titleFix {
+    margin-bottom: -5px;
+}
+
 .block {
     display: inline-block;
 }
 
 .title:hover {
     cursor: pointer;
+}
+
+.upArrow, .downArrow {
+    float: right;
+    margin-right: 2.5%;
+}
+
+.add {
+    position: relative;
+    bottom: 6px;
+    left: 20px;
+}
+
+.buttonInputSpecial {
+    width: 10%;
+    color: white;
+    padding: 1%;
+    margin: 10px 0px 0px 0px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+    font-family: sans-serif !important;
+}
+
+.dataTalbes_length {
+    color: #333;
+    float: left;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+#myTable {
+    padding: 5px 0;
+}
+
+.myTable {
+    padding: 5px 0;
 }

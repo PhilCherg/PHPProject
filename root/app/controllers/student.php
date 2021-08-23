@@ -11,6 +11,7 @@
         public function index()
         {
             $_SESSION['message'] = "";
+            $_SESSION['page'] = "studentIndex";
             $this->view("student/index");
         }
 
@@ -23,7 +24,7 @@
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
-
+            $_SESSION['page'] = "studentAssignments";
             $this->view("student/assignments", ['student' => $student, 'subjects' => $subjects, 'assignments' => $assignments]);
         }
     }

@@ -6,6 +6,7 @@
         public function __construct() {
             $this->db = new DbHandler;
             session_start();
+            $_SESSION['page'] = 'homeIndex';
         }
         
         public function index()
@@ -16,6 +17,7 @@
 
         public function login() {
             if (!isset($_SESSION['message'])) { $_SESSION['message'] = ""; }
+            $_SESSION['page'] = 'homeLogin';
             $this->view("home/login", ['message' => $_SESSION['message']]);
         }
 
@@ -26,10 +28,10 @@
             } else {
                 if ($_POST['role'] == "student") {
                     try {
-                        $user = $this->db->executeSQL("SELECT * FROM Students WHERE username = :username AND pass = :pass;", ['username' => $_POST['username'], 'pass' => $_POST['pass']]);
-                        $count = count($user);
+                        $user = $this->db->executeSQL("SELECT * FROM Students WHERE username = :username", ['username' => $_POST['username']]);
+                        $count = count($user && password_verify($_POST['pass'], $user[0]['pass']));
                         if ($count > 0) {
-                            session_start();
+                        session_start();
                             $_SESSION['id'] = $user[0]['id'];
                             $_SESSION['access'] = "student";
                             header("Location:../student/index");
@@ -42,9 +44,9 @@
                     }
                 } else if ($_POST['role'] == "teacher") {
                     try {
-                        $user = $this->db->executeSQL("SELECT * FROM Teachers WHERE username = :username AND pass = :pass;", ['username' => $_POST['username'], 'pass' => $_POST['pass']]);
+                        $user = $this->db->executeSQL("SELECT * FROM Teachers WHERE username = :username", ['username' => $_POST['username']]);
                         $count = count($user);
-                        if ($count > 0) {
+                        if ($count > 0 && password_verify($_POST['pass'], $user[0]['pass'])) {
                             session_start();
                             $_SESSION['id'] = $user[0]['id'];
                             $_SESSION['access'] = "teacher";
@@ -58,9 +60,9 @@
                     }
                 } else if ($_POST['role'] == "admin") {
                     try {
-                        $user = $this->db->executeSQL("SELECT * FROM Admins WHERE username = :username AND pass = :pass;", ['username' => $_POST['username'], 'pass' => $_POST['pass']]);
+                        $user = $this->db->executeSQL("SELECT * FROM Admins WHERE username = :username", ['username' => $_POST['username']]);
                         $count = count($user);
-                        if ($count > 0) {
+                        if ($count > 0 && password_verify($_POST['pass'], $user[0]['pass'])) {
                             session_start();
                             $_SESSION['id'] = $user[0]['id'];
                             $_SESSION['access'] = "admin";

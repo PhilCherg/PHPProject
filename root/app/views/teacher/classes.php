@@ -4,19 +4,31 @@
         <title>All Classes</title>
         <link rel="stylesheet" type="text/css" href="../../public/css/common.css">
         <link rel="stylesheet" type="text/css" href="../../public/css/table.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+        <script>
+            $(document).ready( function () {
+                $('.downArrow').toggle(0);
+                $('.title').click(function(){
+                    $(this).nextUntil('.title').toggle(0);
+                    $(this).find('.upArrow').toggle(0);
+                    $(this).find('.downArrow').toggle(0);
+                });
+                $('.myTable').DataTable( {
+                    columns: [
+                        null,
+                        null,
+                        { orderable: false }
+                    ]
+                } );
+            } );  
+        </script>
         <style>
-            #add {
-                margin: 1% 1% 0 0;
+            .dataTables_wrapper {
+                margin-top: 10px;
             }
         </style>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $('.titleDiv').click(function(){
-                    $(this).nextUntil('.titleDiv').slideToggle(200);
-                });
-            });
-        </script>
     </head>
     <body>
         <div class="content">
@@ -29,16 +41,22 @@
                 foreach ($data['classes'] as $class) {
                     foreach ($data['classTeachers'] as $linkT) {
                         if ($linkT['class_id'] == $class['id'] && $linkT['teacher_id'] == $data['teacher'][0]['id']) {
-                            echo "<div class='titleDiv'>
-                                    <h1 class='title block'>Class: ".$class['class_name']."</h1>
-                                    <a href='classesAddAssignment/".$class['id']."'><input type='button' id='add' class='button rightButton greenButton' value='Add'></a>
-                                </div>";
-                            echo "<table class='classTable'>
-                                <tr>
-                                    <th>Assignment</th>
-                                    <th class='smallCol'>Weight</th>
-                                    <th class='smallCol'>Remove</th>
-                                </tr>";
+                            echo "<h1 class='title titleFix'>Class: ".$class['class_name']."
+                                <span class='add'>
+                                    <a href='classesAddAssignment/".$class['id']."'><input type='button' class='button greenButton' value='Add'></a>
+                                </span>
+                                <span class='upArrow'>/\</span>
+                                <span class='downArrow'>\/</span>
+                            </h1>";
+                            echo "<table class='classTable myTable'>
+                                <thead>
+                                    <tr>
+                                        <th>Assignment</th>
+                                        <th class='smallCol'>Weight</th>
+                                        <th class='smallCol'>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
                             foreach($data['assignments'] as $assignment) {
                                 foreach($data['classAssignments'] as $linkA) {
                                     if ($linkA['class_id'] == $class['id'] && $linkA['assignment_id'] == $assignment['id']) {
@@ -50,7 +68,7 @@
                                     }
                                 }
                             }
-                            echo "</table>";
+                            echo "</tbody></table>";
                         }
                     }
                 }

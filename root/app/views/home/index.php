@@ -15,8 +15,7 @@
                 <p>Admin - username: admin@admin.com | password: admin</p>
                 <p>Teacher - username: teacher@teacher.com | password: teacher</p>
                 <p>Admin - username: student@student.com | password: student</p>
-            </div>
-            
+            </div> 
         </div>
     </body>
 </html>

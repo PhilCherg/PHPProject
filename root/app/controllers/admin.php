@@ -11,6 +11,7 @@
         public function index()
         {
             $_SESSION['message'] = "";
+            $_SESSION['page'] = "adminIndex";
             $this->view("admin/index");
         }
         
@@ -21,6 +22,7 @@
                 $teachers = $this->db->executeSQL("SELECT Teachers.id, Subjects.subject_name, Teachers.first_name, Teachers.middle_name, Teachers.last_name FROM Teachers LEFT JOIN Subjects ON Teachers.subject_id = Subjects.id;", []);
                 $links = $this->db->executeSQL("SELECT * FROM Class_Teachers", []);
                 $_SESSION['message'] = "";
+                $_SESSION['page'] = "adminClasses";
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -149,6 +151,7 @@
             try {
                 $subjects = $this->db->executeSQL("SELECT * FROM Subjects", []);
                 $_SESSION['message'] = "";
+                $_SESSION['page'] = "adminSubjects";
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -172,7 +175,8 @@
                         if ($subject['subject_name'] == $_POST['name']) $unique = false;
                     }
                     if ($unique) {
-                        $this->db->executeSQL("INSERT INTO Subjects(subject_name) VALUES(:name);", ['name' => $_POST['name']]);
+                        $this->db->executeSQL("INSERT INTO Subjects(subject_name) VALUES(:name);", 
+                        ['name' => $_POST['name']]);
                         header("Location:../admin/subjects");
                     } else {
                         $_SESSION['message'] = "A subject with this name already exists.";
@@ -233,6 +237,7 @@
                 $teachers = $this->db->executeSQL("SELECT * FROM Teachers;", []);
                 $subjects = $this->db->executeSQL("SELECT * FROM Subjects;", []);
                 $_SESSION['message'] = "";
+                $_SESSION['page'] = "adminTeachers";
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -266,7 +271,7 @@
                         if ($teacher['subject_id'] == $_POST['subjectId']) $unique = false;
                     }
                     if ($unique) {
-                        $this->db->executeSQL("INSERT INTO Teachers(username, pass, first_name, middle_name, last_name, subject_id) VALUES(:username, :pass, :fname, :mname, :lname, :subjectId);", [':username' => $_POST['username'], ':pass' => $_POST['password'], 'fname' => $_POST['fname'], 'mname' => $_POST['mname'], 'lname' => $_POST['lname'], 'subjectId' => $_POST['subjectId']]);
+                        $this->db->executeSQL("INSERT INTO Teachers(username, pass, first_name, middle_name, last_name, subject_id) VALUES(:username, :pass, :fname, :mname, :lname, :subjectId);", [':username' => $_POST['username'], ':pass' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'fname' => $_POST['fname'], 'mname' => $_POST['mname'], 'lname' => $_POST['lname'], 'subjectId' => $_POST['subjectId']]);
                         header("Location:../admin/teachers");
                     } else {
                         $_SESSION['message'] = "A teacher for this subject already exists.";
@@ -300,7 +305,7 @@
                     header("Location:../admin/teachersEdit/".$_POST['id']);
             } else {
                 try {
-                    $this->db->executeSQL("UPDATE Teachers SET username = :username, pass = :pass, first_name = :fname, middle_name = :mname, last_name = :lname, subject_id = :subjectId WHERE id = :id", [':username' => $_POST['username'], ':pass' => $_POST['password'], 'fname' => $_POST['fname'], 'mname' => $_POST['mname'], 'lname' => $_POST['lname'], 'subjectId' => $_POST['subjectId'], 'id' => $_POST['id']]);
+                    $this->db->executeSQL("UPDATE Teachers SET username = :username, pass = :pass, first_name = :fname, middle_name = :mname, last_name = :lname, subject_id = :subjectId WHERE id = :id", [':username' => $_POST['username'], ':pass' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'fname' => $_POST['fname'], 'mname' => $_POST['mname'], 'lname' => $_POST['lname'], 'subjectId' => $_POST['subjectId'], 'id' => $_POST['id']]);
                     header("Location:../admin/teachers");
                 } catch(Exception $e) {
                     echo $e->getMessage();
@@ -323,6 +328,7 @@
                 $students = $this->db->executeSQL("SELECT * FROM Students;", []);
                 $classes = $this->db->executeSQL("SELECT * FROM Classes;", []);
                 $_SESSION['message'] = "";
+                $_SESSION['page'] = "adminStudents";
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -350,7 +356,7 @@
                     header("Location:../admin/studentsCreate");
             } else {
                 try {
-                    $this->db->executeSQL("INSERT INTO Students(username, pass, first_name, middle_name, last_name, class_id) VALUES(:username, :pass, :first_name, :middle_name, :last_name, :class_id);", ['username' => $_POST['username'], 'pass' => $_POST['password'], 'first_name' => $_POST['fname'], 'middle_name' => $_POST['mname'], 'last_name' => $_POST['lname'], 'class_id' => $_POST['classId']]);
+                    $this->db->executeSQL("INSERT INTO Students(username, pass, first_name, middle_name, last_name, class_id) VALUES(:username, :pass, :first_name, :middle_name, :last_name, :class_id);", ['username' => $_POST['username'], 'pass' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'first_name' => $_POST['fname'], 'middle_name' => $_POST['mname'], 'last_name' => $_POST['lname'], 'class_id' => $_POST['classId']]);
                     header("Location:../admin/students");
                 } catch(Exception $e) {
                     echo $e->getMessage();
@@ -380,7 +386,7 @@
                     header("Location:../admin/studentsEdit/".$_POST['id']);
             } else {
                 try {
-                    $this->db->executeSQL("UPDATE Students SET username = :username, pass = :pass, first_name = :first_name, middle_name = :middle_name, last_name = :last_name, class_id = :class_id WHERE id = :id", [':username' => $_POST['username'], ':pass' => $_POST['password'], 'first_name' => $_POST['fname'], 'middle_name' => $_POST['mname'], 'last_name' => $_POST['lname'], 'class_id' => $_POST['classId'], 'id' => $_POST['id']]);
+                    $this->db->executeSQL("UPDATE Students SET username = :username, pass = :pass, first_name = :first_name, middle_name = :middle_name, last_name = :last_name, class_id = :class_id WHERE id = :id", [':username' => $_POST['username'], ':pass' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'first_name' => $_POST['fname'], 'middle_name' => $_POST['mname'], 'last_name' => $_POST['lname'], 'class_id' => $_POST['classId'], 'id' => $_POST['id']]);
                     header("Location:../admin/students");
                 } catch(Exception $e) {
                     echo $e->getMessage();
@@ -394,6 +400,68 @@
                 header("Location:../../admin/students");
             } catch(Exception $e) {
                 echo $e->getMessage();
+            }
+        }
+
+        public function grades()
+        {
+            try {
+                $classes = $this->db->executeSQL("SELECT * FROM Classes", []);
+                if(isset($_GET['classId'])) {
+                    $students = $this->db->executeSQL("SELECT * FROM Students WHERE class_id = :class_id", ['class_id' => $_GET['classId']]);
+                    $class = $this->db->executeSQL("SELECT * FROM Classes WHERE id = :id", ['id' => $_GET['classId']]);
+                }
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
+            $_SESSION['message'] = "";
+            $_SESSION['page'] = "adminGrades";
+            if (isset($_GET['classId'])) {
+                $this->view("admin/grades", ['classes' => $classes, 'students' => $students, 'class' => $class]);
+            } else {
+                $this->view("admin/grades", ['classes' => $classes, 'students' => null, 'class' => null]);
+            }
+        }
+
+        public function studentsInfo($id) {
+            try {
+                $subject = $this->db->executeSQL("SELECT Subjects.id FROM Teachers LEFT JOIN Subjects ON Teachers.subject_id = Subjects.id;", []);
+                $student = $this->db->executeSQL("SELECT * FROM Students WHERE id = :id;", ['id' => $id]);
+                $assignments = $this->db->executeSQL("SELECT Student_Assignments.id, assignment_title, assignment_weight, assignment_points, assignment_max FROM Student_Assignments LEFT JOIN Students ON student_id = Students.id LEFT JOIN Assignments on assignment_id = Assignments.id WHERE Students.id = :id;", ['id' => $id]);
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
+            if (!isset($_SESSION['message'])) { $_SESSION['message'] = ""; }
+            $this->view("admin/studentsInfo", ['subject' => $subject, 'student' => $student, 'assignments' => $assignments, 'message' => $_SESSION['message']]);
+        }
+
+        public function studentsInfoEdit($id) {
+            try {
+                $assignment = $this->db->executeSQL("SELECT Student_Assignments.id, assignment_title, assignment_points, assignment_max, student_id FROM Student_Assignments LEFT JOIN Assignments ON assignment_id = Assignments.id WHERE Student_Assignments.id = :id;", ['id' => $id]);
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
+            if (!isset($_SESSION['message'])) { $_SESSION['message'] = ""; }
+            $this->view("admin/studentsInfoEdit", ['assignment' => $assignment, 'message' => $_SESSION['message']]);
+        }
+
+        public function studentsInfoEditSubmit() {  
+            if ((float)$_POST['points'] == null) {
+                $_SESSION['message'] = "The assignment points is required.";
+                header("Location:../admin/studentsInfoEdit/".$_POST['id']);
+            } else if ((float)$_POST['points'] < 0 || (float)$_POST['points'] > (float)$_POST['max']) {
+                $_SESSION['message'] = "The assignment points must be between 0 and ".$_POST['max'].".";
+                header("Location:../admin/studentsInfoEdit/".$_POST['id']);
+            } else {
+                try {
+                    $this->db->executeSQL("UPDATE Student_Assignments SET assignment_points = :points WHERE id = :id", ['points' => $_POST['points'], 'id' => $_POST['id']]);
+                    header("Location:../admin/studentsInfo/".$_POST['student_id']);
+                } catch(Exception $e) {
+                    echo $e->getMessage();
+                }
             }
         }
     }

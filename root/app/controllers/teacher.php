@@ -9,6 +9,7 @@
         public function index()
         {
             $_SESSION['message'] = "";
+            $_SESSION['page'] = "teacherIndex";
             $this->view("teacher/index");
         }
 
@@ -24,6 +25,7 @@
             }
 
             $_SESSION['message'] = "";
+            $_SESSION['page'] = "teacherStudents";
             $this->view("teacher/students", ['teacher' => $teacher, 'classes' => $classes, 'students' => $students, 'links' => $links]);
         }
 
@@ -40,6 +42,7 @@
             }
 
             $_SESSION['message'] = "";
+            $_SESSION['page'] = "teacherClasses";
             $this->view("teacher/classes", ['teacher' => $teacher, 'classes' => $classes, 'classTeachers' => $classTeachers, 'assignments' => $assignments, 'classAssignments' => $classAssignments]);
         }
 
@@ -108,6 +111,7 @@
             }
 
             $_SESSION['message'] = "";
+            $_SESSION['page'] = "teacherAssignments";
             $this->view("teacher/assignments", ['teacher' => $teacher, 'assignments' => $assignments]);
         }
 
@@ -128,7 +132,7 @@
         }
 
         public function assignmentsCreateSubmit() {  
-            if ($_POST['name'] == null || $_POST['weight'] == null || $_POST['max'] == null) {
+            if ($_POST['name'] == null || (float)$_POST['weight'] == null || (float)$_POST['max'] == null) {
                 $_SESSION['message'] = "The assignment name, max, and weight are required.";
                 header("Location:../teacher/assignmentsCreate");
             } else if ((float)$_POST['weight'] > (float)$_POST['availableWeight']) {
@@ -169,6 +173,15 @@
             }
         }
 
+        public function assignmentsDelete($id) {
+            try {
+                $this->db->executeSQL("DELETE FROM Assignments WHERE id = :id;", ['id' => $id]);
+                header("Location:../../teacher/assignments");
+            } catch(Exception $e) {
+                echo $e->getMessage();
+            }
+        }
+
         public function studentsInfo($id) {
             try {
                 $subject = $this->db->executeSQL("SELECT Subjects.id FROM Teachers LEFT JOIN Subjects ON Teachers.subject_id = Subjects.id;", []);
@@ -194,7 +207,7 @@
         }
 
         public function studentsInfoEditSubmit() {  
-            if ($_POST['points'] == null) {
+            if ((float)$_POST['points'] == null) {
                 $_SESSION['message'] = "The assignment points is required.";
                 header("Location:../teacher/studentsInfoEdit/".$_POST['id']);
             } else if ((float)$_POST['points'] < 0 || (float)$_POST['points'] > (float)$_POST['max']) {

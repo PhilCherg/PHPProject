@@ -69,6 +69,7 @@ h1, p {
     padding: 1% 2%;
     overflow: auto;
     background-color: #f2f2f2;
+    margin-bottom: 20px;;
 }
 
 .sectionHeading h1 {
@@ -89,7 +90,7 @@ h1, p {
 
 .instructions h1, p {
     text-align: center;
-    margin: 50px 0px;
+    margin: 30px 0px;
 }
 .instructions h1 {
     font-size: 40px;
@@ -101,4 +102,8 @@ h1, p {
 .instructions {
     background-color: #eee;
     padding: 3%;
+}
+
+.highlight {
+    background-color: #333;
 }

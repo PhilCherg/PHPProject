@@ -4,15 +4,33 @@
         <title>All Students</title>
         <link rel="stylesheet" type="text/css" href="../../public/css/common.css">
         <link rel="stylesheet" type="text/css" href="../../public/css/table.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
         <script>
-            $(document).ready(function(){
+            $(document).ready( function () {
+                $('.downArrow').toggle(0);
                 $('.title').click(function(){
-                    $(this).nextUntil('.title').slideToggle(200);
+                    $(this).nextUntil('.title').toggle(0);
+                    $(this).find('.upArrow').toggle(0);
+                    $(this).find('.downArrow').toggle(0);
                 });
-            });
+                $('.myTable').DataTable( {
+                    columns: [
+                        null,
+                        null,
+                        null,
+                        null,
+                        { orderable: false }
+                    ]
+                } );
+            } );  
         </script>
+        <style>
+            .dataTables_wrapper {
+                margin-top: 10px;
+            }
+        </style>
     </head>
     <body>
         <div class="content">
@@ -25,15 +43,18 @@
                 foreach ($data['classes'] as $class) {
                     foreach ($data['links'] as $link) {
                         if ($link['class_id'] == $class['id'] && $link['teacher_id'] == $data['teacher'][0]['id']) {
-                            echo "<h1 class='title'>Class: ".$class['class_name']."</h1>";
-                            echo "<table class='classTable'>
-                                <tr>
-                                    <th class='smallCol'>Id</th>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Last Name</th>
-                                    <th class='smallCol'>Add Grade</th>
-                                </tr>";
+                            echo "<h1 class='title'>Class: ".$class['class_name']."<span class='upArrow'>/\</span><span class='downArrow'>\/</span></h1>";
+                            echo "<table class='classTable display myTable'>
+                                <thead>    
+                                    <tr>
+                                        <th class='smallCol'>Id</th>
+                                        <th>First Name</th>
+                                        <th>Middle Name</th>
+                                        <th>Last Name</th>
+                                        <th class='smallCol'>Add Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
                             foreach($data['students'] as $student) {
                                 if ($student['class_id'] == $class['id']) {
                                     echo "<tr class='student'>
@@ -45,7 +66,7 @@
                                     </tr>";
                                 }
                             }
-                            echo "</table>";
+                            echo "</tbody></table>";
                         }
                     }
                 }

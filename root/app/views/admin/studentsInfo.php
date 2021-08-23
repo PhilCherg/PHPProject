@@ -42,7 +42,7 @@
                     if ($average == 0) $average = "--";
                     echo "<h1>".$average."%</h1>";
                 ?>
-                <a href="../../teacher/students"><input type="button" class="buttonInputSpecial blueButton" value="Back"></a>
+                <a href="../../admin/grades?classId=<?php echo $data['student'][0]['class_id'];?>"><input type="button" class="buttonInputSpecial blueButton" value="Back"></a>
             </div>
             <table class='display' id='myTable'>
                 <thead>
@@ -63,7 +63,6 @@
                                 <td><a href='../studentsInfoEdit/".$assignment['id']."'><input type='button' class='button buttonBig blueButton' value='Edit'></a></td>
                             </tr>";
                         }
-                    
                     ?>
                 </tbody>
             </table>
